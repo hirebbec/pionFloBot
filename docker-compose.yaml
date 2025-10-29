@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  pionflo-bot:
+    container_name: pionflo-bot
+    restart: always
+    build:
+      context: .
+    working_dir: /app
+    command: python -m main
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+  
+  pionflo-bot-db:
+    image: postgres:16-alpine
+    container_name: pionflo-bot-db-${ENVIRONMENT}
+    restart: always
+    command: -p ${POSTGRES_PORT}
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    networks:
+      - dtp-network
+    expose:
+      - ${POSTGRES_PORT}
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    volumes:
+      - pionflo-bot-db-data:/var/lib/postgresql/data/
+    healthcheck:
+      test: pg_isready -p ${POSTGRES_PORT} -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+      interval: 60s
+      timeout: 3s
+      retries: 3
