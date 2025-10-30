@@ -1,6 +1,6 @@
 FROM python:3.12
 
-WORKDIR /app
+WORKDIR /usr/pionflo-bot/app
 
 ENV PYTHONUNBUFFERED=1 \
     TZ="Europe/Moscow"

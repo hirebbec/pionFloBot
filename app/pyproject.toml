@@ -10,7 +10,11 @@ package-mode = false
 
 dependencies = [
     "python-telegram-bot (>=22.5,<23.0)",
-    "matplotlib (>=3.10.6,<4.0.0)"
+    "matplotlib (>=3.10.6,<4.0.0)",
+    "sqlalchemy (>=2.0.44,<3.0.0)",
+    "asyncpg (>=0.30.0,<0.31.0)",
+    "pydantic-settings (>=2.11.0,<3.0.0)",
+    "alembic (>=1.17.1,<2.0.0)"
 ]
 
 [tool.poetry.group.dev.dependencies]
