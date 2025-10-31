@@ -1,11 +1,9 @@
-from telegram.ext import (
-    Application,
-    CommandHandler,
-)
+from telegram.ext import Application, CommandHandler, filters, MessageHandler
 
 from core.config import settings
 from factories import build_services
 from handlers.common import start
+from handlers.mouth import begin_mouth
 from utils.logging import setup_logging
 
 # async def begin_shift(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -140,6 +138,8 @@ def main():
     app.bot_data.update(build_services())
 
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(MessageHandler(filters.Text("Начать месяц"), begin_mouth))
+
     app.run_polling()
 
 

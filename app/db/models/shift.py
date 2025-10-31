@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import ForeignKey, Integer, Boolean, Float, DateTime, func
+from sqlalchemy import ForeignKey, Integer, Boolean, Float, DateTime, func, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column
 
 from db.models.base import BaseModel
@@ -10,7 +10,9 @@ from db.models.mixins import IDMixin
 class Shift(BaseModel, IDMixin):
     __tablename__ = "shifts"
 
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+    telegram_id: Mapped[int] = mapped_column(
+        BigInteger, ForeignKey("users.telegram_id")
+    )
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     rate: Mapped[float] = mapped_column(Float)
     total: Mapped[float] = mapped_column(Float, default=0)
