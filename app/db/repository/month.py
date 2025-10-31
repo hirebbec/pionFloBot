@@ -4,13 +4,13 @@ from db.repository.base import BaseDataBaseRepository
 
 
 class MonthRepository(BaseDataBaseRepository):
-    async def create(self, telegram_id: str) -> None:
+    async def create(self, telegram_id: int) -> None:
         query = insert(Month).values(telegram_id=telegram_id)
 
         await self._session.execute(query)
         await self._session.commit()
 
-    async def get_active_month(self, telegram_id: str) -> Month | None:
+    async def get_active_month(self, telegram_id: int) -> Month | None:
         query = select(Month).where(
             and_(Month.is_active.is_(True), Month.telegram_id == telegram_id)
         )
@@ -18,7 +18,7 @@ class MonthRepository(BaseDataBaseRepository):
 
         return result.scalars().first()
 
-    async def end_month(self, telegram_id: str) -> None:
+    async def end_month(self, telegram_id: int) -> None:
         query = (
             update(Month)
             .values(is_active=False, end_time=func.now())

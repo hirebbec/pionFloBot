@@ -6,7 +6,7 @@ class MonthService(BaseService):
     def __init__(self, month_repository: MonthRepository) -> None:
         self._month_repository = month_repository
 
-    async def begin_month(self, telegram_id: str) -> str:
+    async def begin_month(self, telegram_id: int) -> str:
         if await self._month_repository.get_active_month(telegram_id=telegram_id):
             return "Чтобы начать месяц, необходимо завершить текущий месяц."
 
@@ -14,7 +14,7 @@ class MonthService(BaseService):
 
         return "Новый месяц начат!"
 
-    async def end_month(self, telegram_id: str) -> str:
+    async def end_month(self, telegram_id: int) -> str:
         if not await self._month_repository.get_active_month(telegram_id=telegram_id):
             return "Месяц еще не начат."
 
