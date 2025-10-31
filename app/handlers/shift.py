@@ -15,18 +15,36 @@ async def begin_shift(
     user_service: UserService,
     month_service: MonthService,
     shift_service: ShiftService,
-) -> str | None:
+) -> None:
     if not await month_service.get_active_month(telegram_id=update.message.chat.id):
-        return 'Сначала нажмите "Начать месяц"!'
+        await update.message.reply_text(text='Сначала нажмите "Начать месяц"!')
 
-    if await shift_service.get_active_shift(telegram_id=update.message.chat.id):
-        return "Чтобы начать новую смену, необходимо завершить текущую смену."
+    elif await shift_service.get_active_shift(telegram_id=update.message.chat.id):
+        await update.message.reply_text(
+            text="Чтобы начать новую смену, необходимо завершить текущую смену."
+        )
 
-    reply_markup = ReplyKeyboardMarkup(settings().keyboard_ratio, resize_keyboard=True)
+    else:
+        reply_markup = ReplyKeyboardMarkup(
+            settings().keyboard_ratio, resize_keyboard=True
+        )
 
-    await update.message.reply_text(
-        "Выберите ставку для расчета:", reply_markup=reply_markup
-    )
+        await update.message.reply_text(
+            "Выберите ставку для расчета:", reply_markup=reply_markup
+        )
+
+
+@with_services("user", "month", "shift")
+async def end_shift(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+    user_service: UserService,
+    month_service: MonthService,
+    shift_service: ShiftService,
+) -> None:
+    text = await shift_service.end_shift(telegram_id=update.message.chat.id)
+
+    await update.message.reply_text(text=text)
 
 
 async def _set_ratio(

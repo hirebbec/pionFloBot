@@ -1,6 +1,6 @@
 from db.models import Shift
 from db.repository.base import BaseDataBaseRepository
-from sqlalchemy import select, and_, insert
+from sqlalchemy import select, and_, insert, update, func
 
 
 class ShiftRepository(BaseDataBaseRepository):
@@ -19,3 +19,13 @@ class ShiftRepository(BaseDataBaseRepository):
         result = await self._session.execute(query)
 
         return result.scalars().first()
+
+    async def end_shift(self, telegram_id: int) -> None:
+        query = (
+            update(Shift)
+            .values(is_active=False, end_time=func.now())
+            .where(and_(Shift.telegram_id == telegram_id, Shift.is_active.is_(True)))
+        )
+
+        await self._session.execute(query)
+        await self._session.commit()

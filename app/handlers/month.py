@@ -13,9 +13,9 @@ async def begin_month(
     user_service: UserService,
     month_service: MonthService,
 ) -> None:
-    message = await month_service.begin_month(telegram_id=update.message.chat.id)
+    text = await month_service.begin_month(telegram_id=update.message.chat.id)
 
-    await update.message.reply_text(message)
+    await update.message.reply_text(text=text)
 
 
 @with_services("user", "month")
@@ -25,6 +25,6 @@ async def end_month(
     user_service: UserService,
     month_service: MonthService,
 ) -> None:
-    message = await month_service.end_month(telegram_id=update.message.chat.id)
+    text = await month_service.end_month(telegram_id=update.message.chat.id)
 
-    await update.message.reply_text(message)
+    await update.message.reply_text(text=text)

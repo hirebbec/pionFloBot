@@ -1,10 +1,12 @@
 from contextlib import asynccontextmanager
 
 from db.repository.month import MonthRepository
+from db.repository.order import OrderRepository
 from db.repository.shift import ShiftRepository
 from db.repository.user import UserRepository
 from db.session import get_async_session
 from service.month import MonthService
+from service.order import OrderService
 from service.shift import ShiftService
 from service.user import UserService
 
@@ -33,8 +35,16 @@ def build_services() -> dict:
             service = ShiftService(shift_repository=shift_repository)
             yield service
 
+    @asynccontextmanager
+    async def order_service_factory():
+        async with async_session_maker() as session:
+            order_repository = OrderRepository(session=session)
+            service = OrderService(order_repository=order_repository)
+            yield service
+
     return {
         "user_service_factory": user_service_factory,
         "month_service_factory": month_service_factory,
         "shift_service_factory": shift_service_factory,
+        "order_service_factory": order_service_factory,
     }

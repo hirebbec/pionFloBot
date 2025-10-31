@@ -13,5 +13,5 @@ async def start(
     reply_markup = ReplyKeyboardMarkup(settings().keyboard_main, resize_keyboard=True)
 
     await update.message.reply_text(
-        "Привет! Я бот учёта смен и заказов 💐", reply_markup=reply_markup
+        text="Привет! Я бот учёта смен и заказов 💐", reply_markup=reply_markup
     )
