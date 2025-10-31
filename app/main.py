@@ -3,7 +3,7 @@ from telegram.ext import Application, CommandHandler, filters, MessageHandler
 from core.config import settings
 from factories import build_services
 from handlers.common import start
-from handlers.mouth import begin_mouth
+from handlers.month import begin_month, end_month
 from utils.logging import setup_logging
 
 # async def begin_shift(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -119,12 +119,12 @@ from utils.logging import setup_logging
 #     await update.message.reply_photo(photo=buf)
 #
 #
-# async def begin_mouth(update: Update, context: ContextTypes.DEFAULT_TYPE):
-#     mouth_service_factory = context.application.bot_data["mouth_service_factory"]
-#     mouth_service = await mouth_service_factory()  # создаём сервис с новой сессией
+# async def begin_month(update: Update, context: ContextTypes.DEFAULT_TYPE):
+#     month_service_factory = context.application.bot_data["month_service_factory"]
+#     month_service = await month_service_factory()  # создаём сервис с новой сессией
 #
 #     # вызываем нужный метод
-#     await mouth_service.begin_mouth()
+#     await month_service.begin_month()
 #
 #     await update.message.reply_text(
 #         "✅ Новый месяц начат! Все предыдущие данные обнулены. Теперь можно начинать смены."
@@ -138,7 +138,8 @@ def main():
     app.bot_data.update(build_services())
 
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.Text("Начать месяц"), begin_mouth))
+    app.add_handler(MessageHandler(filters.Text("Начать месяц"), begin_month))
+    app.add_handler(MessageHandler(filters.Text("Завершить месяц"), end_month))
 
     app.run_polling()
 
