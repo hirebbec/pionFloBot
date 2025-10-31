@@ -1,3 +1,4 @@
+from db.models import Month
 from db.repository.month import MonthRepository
 from service.base import BaseService
 
@@ -5,6 +6,9 @@ from service.base import BaseService
 class MonthService(BaseService):
     def __init__(self, month_repository: MonthRepository) -> None:
         self._month_repository = month_repository
+
+    async def get_active_month(self, telegram_id: int) -> Month | None:
+        return await self._month_repository.get_active_month(telegram_id)
 
     async def begin_month(self, telegram_id: int) -> str:
         if await self._month_repository.get_active_month(telegram_id=telegram_id):

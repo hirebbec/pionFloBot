@@ -13,9 +13,10 @@ class Shift(BaseModel, IDMixin):
     telegram_id: Mapped[int] = mapped_column(
         BigInteger, ForeignKey("users.telegram_id")
     )
+    month_id: Mapped[int] = mapped_column(Integer, ForeignKey("months.id"))
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     rate: Mapped[float] = mapped_column(Float)
     total: Mapped[float] = mapped_column(Float, default=0)
     count: Mapped[int] = mapped_column(Integer, default=0)
     start_time: Mapped[datetime] = mapped_column(DateTime, default=func.now())
-    end_time: Mapped[datetime] = mapped_column(DateTime)
+    end_time: Mapped[datetime] = mapped_column(DateTime, nullable=True, default=None)

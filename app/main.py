@@ -4,6 +4,7 @@ from core.config import settings
 from factories import build_services
 from handlers.common import start
 from handlers.month import begin_month, end_month
+from handlers.shift import set_ratio_5, set_ratio_10, begin_shift
 from utils.logging import setup_logging
 
 # async def begin_shift(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -140,6 +141,9 @@ def main():
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.Text("Начать месяц"), begin_month))
     app.add_handler(MessageHandler(filters.Text("Завершить месяц"), end_month))
+    app.add_handler(MessageHandler(filters.Text("Начать смену"), begin_shift))
+    app.add_handler(MessageHandler(filters.Text("Ставка 5%"), set_ratio_5))
+    app.add_handler(MessageHandler(filters.Text("Ставка 10%"), set_ratio_10))
 
     app.run_polling()
 
