@@ -1,3 +1,5 @@
+from typing import Sequence
+
 from db.models import Shift
 from db.repository.base import BaseDataBaseRepository
 from sqlalchemy import select, and_, insert, update, func
@@ -29,3 +31,9 @@ class ShiftRepository(BaseDataBaseRepository):
 
         await self._session.execute(query)
         await self._session.commit()
+
+    async def get_shift_by_month_id(self, month_id: int) -> Sequence[Shift]:
+        query = select(Shift).where(Shift.month_id == month_id)
+
+        result = await self._session.execute(query)
+        return result.scalars().all()

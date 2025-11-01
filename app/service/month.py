@@ -18,10 +18,5 @@ class MonthService(BaseService):
 
         return "Новый месяц начат!"
 
-    async def end_month(self, telegram_id: int) -> str:
-        if not await self._month_repository.get_active_month(telegram_id=telegram_id):
-            return "Месяц еще не начат."
-
+    async def end_month(self, telegram_id: int) -> None:
         await self._month_repository.end_month(telegram_id=telegram_id)
-
-        return "Месяц завершен!"

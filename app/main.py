@@ -3,7 +3,7 @@ from telegram.ext import Application, CommandHandler, filters, MessageHandler
 from core.config import settings
 from factories import build_services
 from handlers.common import start
-from handlers.month import begin_month, end_month
+from handlers.month import begin_month, end_month, get_month_stat, plot_month
 from handlers.order import save_order
 from handlers.shift import (
     set_ratio_5,
@@ -11,6 +11,7 @@ from handlers.shift import (
     begin_shift,
     end_shift,
     get_shift_stat,
+    plot_shift,
 )
 from utils.logging import setup_logging
 
@@ -151,6 +152,9 @@ def main():
     app.add_handler(MessageHandler(filters.Text("Закрыть смену"), end_shift))
     app.add_handler(MessageHandler(filters.Text("Начать смену"), begin_shift))
     app.add_handler(MessageHandler(filters.Text("Текущая смена"), get_shift_stat))
+    app.add_handler(MessageHandler(filters.Text("Текущий месяц"), get_month_stat))
+    app.add_handler(MessageHandler(filters.Text("Графики за смену"), plot_shift))
+    app.add_handler(MessageHandler(filters.Text("Графики за месяц"), plot_month))
     app.add_handler(MessageHandler(filters.Text("Ставка 5%"), set_ratio_5))
     app.add_handler(MessageHandler(filters.Text("Ставка 10%"), set_ratio_10))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, save_order))

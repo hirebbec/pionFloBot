@@ -1,3 +1,5 @@
+from typing import Sequence
+
 from db.models import Shift
 from db.repository.shift import ShiftRepository
 from service.base import BaseService
@@ -22,3 +24,6 @@ class ShiftService(BaseService):
 
     async def get_active_shift(self, telegram_id: int) -> Shift | None:
         return await self._shift_repository.get_active_shift(telegram_id=telegram_id)
+
+    async def get_shift_by_month_id(self, month_id: int) -> Sequence[Shift]:
+        return await self._shift_repository.get_shift_by_month_id(month_id=month_id)

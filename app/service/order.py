@@ -1,3 +1,6 @@
+from typing import Sequence
+
+from db.models import Order
 from db.repository.order import OrderRepository
 from utils.schemas import StatSchema
 from service.base import BaseService
@@ -16,3 +19,6 @@ class OrderService(BaseService):
         return StatSchema(
             count=len(orders), total=sum([order.amount for order in orders])
         )
+
+    async def get_orders_by_shift_id(self, shift_id: int) -> Sequence[Order]:
+        return await self._order_repository.get_by_shift_id(shift_id=shift_id)
