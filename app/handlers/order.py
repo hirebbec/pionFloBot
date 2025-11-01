@@ -23,12 +23,12 @@ async def save_order(
 
     if not await month_service.get_active_month(telegram_id=update.message.chat.id):
         await update.message.reply_text(text='Сначала нажмите "Начать месяц"!')
+        return
 
-    elif not await shift_service.get_active_shift(telegram_id=update.message.chat.id):
+    shift = await shift_service.get_active_shift(telegram_id=update.message.chat.id)
+
+    if not shift:
         await update.message.reply_text(text='Сначала нажмите "Начать смену"!')
+        return
 
-    else:
-        shift = await shift_service.get_active_shift(telegram_id=update.message.chat.id)
-        await order_service.create_order(
-            shift_id=shift.id, amount=int(update.message.text)
-        )
+    await order_service.create_order(shift_id=shift.id, amount=int(update.message.text))
